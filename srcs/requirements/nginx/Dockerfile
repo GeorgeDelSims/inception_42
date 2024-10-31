@@ -3,6 +3,7 @@ FROM debian:bullseye
 #update package lists and install NGINX server
 RUN apt-get update && \
     apt-get install -y nginx openssl && \
+    useradd -M -s /sbin/nologin -g www-data nginx && \
     rm -rf /var/lib/apt/lists/*
 
 # copy custom nginx configuration
@@ -11,9 +12,9 @@ COPY ./nginx.conf /etc/nginx/ningx/conf
 # Create SSL Directory in the container to store SSL certificates
 # generate self-signed certificates using openssl (second line)
 RUN mkdir -p /etc/nginx/ssl && \
-    openssl req x509 -nodes -days 365 -newkey rsa:2048 \
+    openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
     -keyout /etc/nginx/ssl/nginx.key \
-    -out /etc/nginx/ssl/nginx.crt
+    -out /etc/nginx/ssl/nginx.crt \
     -subj "/CN=gsims.42.fr"
 
 # HTTPS PORT 

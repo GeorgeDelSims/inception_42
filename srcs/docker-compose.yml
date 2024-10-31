@@ -3,8 +3,8 @@ version: "3.5"
 # VOLUMES: defines storage location that Docker manages
 # maintains data persistance (even if container restarts)
 volumes:
-  wordpress_data:
   mariadb_data:
+  wordpress_data:
 
 # NETWORKS: defines virtual networks that connect containers
 # each container is then added to this network in order to link them up
@@ -18,8 +18,8 @@ services:
     container_name: nginx
     build: ./requirements/nginx/.
     ports:
-      - "80:80" #http Port
-      - "443:443" # https Port
+      - "8080:80" #http Port
+      - "8443:443" # https Port
     depends_on:
       - wordpress
     volumes: # defines directories that persist outside of container
@@ -27,7 +27,18 @@ services:
     networks:
       - inception
     restart: always
-  
+    
+  mariadb:
+    container_name: mariadb
+    build: ./requirements/mariadb/.
+    volumes: 
+      - mariadb_data:/var/lib/mysql
+    env_file:
+      - .env
+    networks: 
+      - inception
+    restart: always # ensures the container automatically restarts if it is stopped unexpectedly
+
   wordpress:
     container_name: wordpress
     build: ./requirements/wordpress/.
@@ -38,14 +49,9 @@ services:
     networks: 
       - inception
     restart: always
-  
-  mariadb:
-    container_name: mariadb
-    build: ./requirements/mariadb/.
-    volumes: 
-      - mariadb_data:/var/lib/mysql
-    env_file:
-      - .env
-    networks: 
-      - inception
-    restart: always # ensures the container automatically restarts if it is stopped unexpectadly
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:80"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+

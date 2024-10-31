@@ -1,9 +1,9 @@
 FROM debian:bullseye
 
-# Update package list and install necessary packages
+# Update package list and install necessary packages  (php-fpm = PHP FastCGI Process Manager)
 RUN apt-get update && \
-    apt-get install -y php php-fpm php-mysqli php-json php-curl php-xml php-mbstring
-    # rm -rf /var/lib/apt/lists/*
+    apt-get install -y curl php php-fpm php-mysqli php-json php-curl php-xml php-mbstring && \
+    rm -rf /var/lib/apt/lists/*
 
 # Download (curl -o downloads file with specific filename) 
 # get latest version of WordPress from official website
@@ -19,7 +19,7 @@ COPY ./wp-config.php /var/www/html/wp-config.php
 # chown = change ownership 
 RUN chown -R www-data:www-data /var/www/html && \
     # owner has full read write and exec permissions (7) 
-    # group and others only have reand and execute (5) 
+    # group and others only have read and execute (5) 
     chmod -R 755 /var/www/html
 
 # Expose default port for PHP-FPM 
@@ -28,5 +28,4 @@ RUN chown -R www-data:www-data /var/www/html && \
 EXPOSE 9000
 
 # start the php-fpm server: php-fpm7.3
-CMD ["php-fpm7.3", "-F"]
-
+CMD ["php-fpm7.4", "-F"]
