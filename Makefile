@@ -8,7 +8,8 @@ down:
 	docker-compose -f srcs/docker-compose.yml down
 
 # Rebuild containers
-rebuild:
+re:
+	docker-compose -f srcs/docker-compose.yml down
 	docker-compose -f srcs/docker-compose.yml up --build -d --force-recreate
 
 # View logs of all services

@@ -8,9 +8,7 @@ RUN apt-get update && \
 # copy init.sql config launch file into container architecture 
 COPY ./conf/init.sql /docker-entrypoint-initdb.d/init.sql
 
-# expose the default MariaDB/MySQL port 
-# (informs Docker that the container listens on this port)
-EXPOSE 3306
+
 
 # set mysqld_safe as entry pooint to start MariaDB (apparently this is recommended)
 ENTRYPOINT ["mysqld_safe"]
