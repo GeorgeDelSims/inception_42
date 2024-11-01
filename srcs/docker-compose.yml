@@ -3,8 +3,8 @@ version: "3.5"
 # VOLUMES: defines storage location that Docker manages
 # maintains data persistance (even if container restarts)
 volumes:
-  mariadb_data:
-  wordpress_data:
+  mariadb_data: # database for wordpress
+  wordpress_data: # actual wordpress files
 
 # NETWORKS: defines virtual networks that connect containers
 # each container is then added to this network in order to link them up

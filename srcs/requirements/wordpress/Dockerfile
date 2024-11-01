@@ -15,7 +15,7 @@ RUN mkdir -p /var/www/html && \
 # Copy config file into container
 COPY ./wp-config.php /var/www/html/wp-config.php
 
-# Setup permissions for WP files
+# Setup permissions for Wordpress files
 # chown = change ownership 
 RUN chown -R www-data:www-data /var/www/html && \
     # owner has full read write and exec permissions (7) 
