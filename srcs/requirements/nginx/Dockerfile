@@ -7,7 +7,8 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 
 # copy custom nginx configuration
-COPY ./nginx.conf /etc/nginx/ningx/conf
+# COPY ./nginx.conf /etc/nginx/ningx/conf
+COPY ./default /etc/nginx/sites_available/.
 
 # Create SSL Directory in the container to store SSL certificates
 # generate self-signed certificates using openssl (second line)

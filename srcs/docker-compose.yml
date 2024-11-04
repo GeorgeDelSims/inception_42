@@ -24,6 +24,7 @@ services:
       - wordpress
     volumes: # defines directories that persist outside of container
       - ./requirements/nginx/nginx.conf:/etc/nginx/nginx.conf  # NGINX config (bind mount)
+      - ./wordpress_data:/var/www/html
     networks:
       - inception
     restart: always
@@ -32,7 +33,7 @@ services:
     container_name: mariadb
     build: ./requirements/mariadb/.
     volumes: 
-      - mariadb_data:/var/lib/mysql
+      - ./mariadb_data:/var/lib/mysql
     env_file:
       - .env
     networks: 
@@ -43,7 +44,7 @@ services:
     container_name: wordpress
     build: ./requirements/wordpress/.
     volumes:
-      - wordpress_data:/var/www/html
+      - ./wordpress_data:/var/www/html
     env_file:
       - .env
     networks: 

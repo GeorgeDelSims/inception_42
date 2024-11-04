@@ -1,27 +1,35 @@
+# FROM debian:bullseye
+
+# # Update package list and install necessary packages for PHP 7.4 and WP-CLI
+# RUN apt-get update && \
+#     apt-get install -y php7.4 php7.4-fpm php7.4-mysqli php7.4-json php7.4-curl php7.4-xml php7.4-mbstring curl
+
+# COPY www.conf /etc/php/7.4/fpm/pool.d/.
+
+# COPY wp_install.sh .
+
+# RUN chmod +x wp_install.sh
+
+# # Start PHP-FPM
+# CMD ["./wp_install.sh"]
+
+
 FROM debian:bullseye
 
-# Update package list and install necessary packages for PHP 7.4
+# Update package list and install necessary packages for PHP 7.4 and WP-CLI
 RUN apt-get update && \
-    apt-get install -y curl lsb-release ca-certificates apt-transport-https software-properties-common && \
-    curl -sSL https://packages.sury.org/php/README.txt | bash && \
-    apt-get update && \
-    apt-get install -y php7.4 php7.4-fpm php7.4-mysqli php7.4-json php7.4-curl php7.4-xml php7.4-mbstring && \
-    mkdir -p /run/php && \
+    apt-get install -y php7.4 php7.4-fpm php7.4-mysqli php7.4-json php7.4-curl php7.4-xml php7.4-mbstring curl && \
     rm -rf /var/lib/apt/lists/*
 
-# Copy the custom www.conf file into the container
-COPY ./config/php-fpm/www.conf /etc/php/7.4/fpm/pool.d/www.conf
+# Copy custom www.conf into the PHP-FPM pool configuration
+COPY www.conf /etc/php/7.4/fpm/pool.d/www.conf
 
-# Download the latest version of WordPress from the official website
-RUN mkdir -p /var/www/html && \
-    curl -o /wordpress.tar.gz https://wordpress.org/latest.tar.gz && \
-    tar -xzvf /wordpress.tar.gz -C /var/www/html --strip-components=1 && \
-    rm /wordpress.tar.gz && \
-    chown -R www-data:www-data /var/www/html && \
-    chmod -R 755 /var/www/html
+# Copy the wp_install.sh script and make it executable
+COPY wp_install.sh /usr/local/bin/wp_install.sh
+RUN chmod +x /usr/local/bin/wp_install.sh
 
-# Copy the wp-config.php file into the container
-COPY ./wp-config.php /var/www/html/wp-config.php
+# Run the wp_install.sh script as an entrypoint
+ENTRYPOINT ["/usr/local/bin/wp_install.sh"]
 
-# Start the PHP-FPM server
+# Start PHP-FPM in the foreground
 CMD ["php-fpm7.4", "-F"]
