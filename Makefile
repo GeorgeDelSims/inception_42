@@ -20,4 +20,5 @@ logs:
 # Clean up (remove containers and volumes)
 clean:
 	docker-compose -f srcs/docker-compose.yml down -v
+	chmod 777 volumes/*
 	rm -rf volumes/*

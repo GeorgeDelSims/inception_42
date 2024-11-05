@@ -14,9 +14,9 @@ COPY ./conf/init.sql /etc/mysql/init.sql
 
 COPY mariadb_script.sh .
 
-RUN mkdir /run/mysqld && chown -R mysql:mysql /run/mysqld
+RUN mkdir /run/mysqld && chown -R mysql:mysql /run/mysqld && chmod +x mariadb_script.sh
 
 # RUN chmod +x mariadb_script.sh && ./mariadb_script.sh
 
 # set mysqld_safe as entry point to start MariaDB (apparently this is recommended)
-CMD ["mysqld_safe"]
+CMD ["./mariadb_script.sh"]

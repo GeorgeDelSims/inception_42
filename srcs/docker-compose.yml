@@ -1,4 +1,4 @@
-version: "3.5"
+# version: "3.5"
 
 # VOLUMES: defines storage location that Docker manages
 # maintains data persistance (even if container restarts)
@@ -22,9 +22,10 @@ services:
       - "8443:443" # https Port
     depends_on:
       - wordpress
+      # - mariadb
     volumes: # defines directories that persist outside of container
       - ./requirements/nginx/nginx.conf:/etc/nginx/nginx.conf  # NGINX config (bind mount)
-      - ./wordpress_data:/var/www/html
+      - ../volumes/wordpress_data:/var/www/html
     networks:
       - inception
     restart: always
@@ -33,7 +34,7 @@ services:
     container_name: mariadb
     build: ./requirements/mariadb/.
     volumes: 
-      - ./mariadb_data:/var/lib/mysql
+      - ../volumes/mariadb_data:/var/lib/mysql
     env_file:
       - .env
     networks: 
@@ -42,12 +43,13 @@ services:
 
   wordpress:
     container_name: wordpress
+    # depends_on:
+      # - mariadb
     build: ./requirements/wordpress/.
     volumes:
-      - ./wordpress_data:/var/www/html
+      - ../volumes/wordpress_data:/var/www/html
     env_file:
       - .env
     networks: 
       - inception
     restart: always
-
