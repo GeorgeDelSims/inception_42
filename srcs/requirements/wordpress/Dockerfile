@@ -11,7 +11,14 @@ COPY www.conf /etc/php/7.4/fpm/pool.d/www.conf
 # RUN rm /var/www/html/wp-config.php
 
 # copy wordpress config file into container
+# THis copy does not seem to be working: 
 COPY ./wp-config.php /var/www/html/wp-config.php
+
+# Change ownership to the appropriate user and group
+RUN chown www-data:www-data /var/www/html/wp-config.php
+
+# RUN rm /var/www/html/wp-config-sample.php && \
+#     cp ./wp-config.php /var/www/html/wp-config.php
 
 # Copy the wp_install.sh script and make it executable
 COPY ./wp_install.sh /usr/local/bin/wp_install.sh

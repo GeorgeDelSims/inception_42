@@ -1,6 +1,7 @@
 # Build and start all containers
 up:
-	srcs/./generate_env.sh
+	# Run the environment generation script
+	srcs/./generate_env.sh || exit 1
 	docker-compose -f srcs/docker-compose.yml up --build -d
 
 # Stop and remove containers
@@ -9,7 +10,8 @@ down:
 
 # Rebuild containers
 re:
-	srcs/./generate_env.sh
+	# Run the environment generation script
+	srcs/./generate_env.sh || exit 1
 	docker-compose -f srcs/docker-compose.yml down
 	docker-compose -f srcs/docker-compose.yml up --build -d --force-recreate
 
@@ -19,6 +21,9 @@ logs:
 
 # Clean up (remove containers and volumes)
 clean:
-	docker-compose -f srcs/docker-compose.yml down -v
-	chmod 777 volumes/*
-	rm -rf volumes/*
+	@read -p "Are you sure you want to delete all volumes and images? [y/N] " confirm; \
+	if [ "$$confirm" = "y" ]; then \
+		docker-compose -f srcs/docker-compose.yml down -v --rmi all; \
+		chmod 777 volumes/*; \
+		rm -rf volumes/*; \
+	fi
