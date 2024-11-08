@@ -8,14 +8,16 @@ RUN apt-get update && \
 # Copy custom www.conf into the PHP-FPM pool configuration
 COPY www.conf /etc/php/7.4/fpm/pool.d/www.conf
 
-# RUN rm /var/www/html/wp-config.php
 
 # copy wordpress config file into container
-# THis copy does not seem to be working: 
-COPY ./wp-config.php /var/www/html/wp-config.php
+# THis copy does not seem to be working: !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+# RUN rm /var/www/html/wp-config-sample.php
+COPY ./wp-config.php /
+
 
 # Change ownership to the appropriate user and group
-RUN chown www-data:www-data /var/www/html/wp-config.php
+RUN chown www-data:www-data /wp-config.php
+RUN chmod 777 /wp-config.php
 
 # RUN rm /var/www/html/wp-config-sample.php && \
 #     cp ./wp-config.php /var/www/html/wp-config.php

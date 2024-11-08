@@ -1,10 +1,15 @@
 #!/bin/bash
 
+
 # Change to the web root directory
+sleep 15
 cd /var/www/html
+mv ../../../wp-config.php wp-config.php
+echo "copied wp-config/php into correct folder"
+ls -la
 
 # Check if wordpress is already installed or not: 
-if [ -f wp-config.php ]; then
+if [ "/var/www/html/wp-config.php" ]; then
     echo "WordPress is already installed. Skipping installation."
 else
     echo "Setting up WordPress..."
@@ -18,7 +23,7 @@ else
     wp core download --allow-root
 
     # Create the wp-config.php file
-    wp config create --dbname=${MYSQL_DATABASE} --dbuser=${WP_USER} --dbpass=${WP_USER_PASSWORD} --dbhost=${WORDPRESS_DB_HOST} --allow-root
+    wp config create --dbname=${DB_NAME} --dbuser=${WP_USER} --dbpass=${WP_USER_PASSWORD} --dbhost=${DB_HOST} --allow-root
 
     # Install WordPress
     wp core install --url=localhost --title=inception --admin_user=${ADMIN_USER} --admin_password=${ADMIN_PASSWORD} --admin_email=${ADMIN_EMAIL} --allow-root

@@ -1,27 +1,27 @@
 #!/bin/bash
-# echo "MYSQL_ROOT_PASSWORD=$(cat secrets/mysql_root_password.txt)" >> srcs/.env
-# echo "MYSQL_PASSWORD=$(cat secrets/mysql_password.txt)" >> srcs/.env
+# echo "DB_ROOT_PWD=$(cat secrets/mysql_root_password.txt)" >> srcs/.env
+# echo "DB_PWF=$(cat secrets/mysql_password.txt)" >> srcs/.env
 
 # Path to your .env file
 ENV_FILE=".env"
 
 # Read the new password values from the text files
-MYSQL_ROOT_PASSWORD=$(cat secrets/mysql_root_password.txt)
-MYSQL_PASSWORD=$(cat secrets/mysql_password.txt)
+DB_ROOT_PWD=$(cat secrets/mysql_root_password.txt)
+DB_PWD=$(cat secrets/mysql_password.txt)
 
 # Use `sed` to update or replace the existing values in the .env file
-if grep -q "MYSQL_ROOT_PASSWORD=" "$ENV_FILE"; then
-    # If MYSQL_ROOT_PASSWORD already exists, replace its value
-    sed -i "s/^MYSQL_ROOT_PASSWORD=.*/MYSQL_ROOT_PASSWORD=$MYSQL_ROOT_PASSWORD/" "$ENV_FILE"
+if grep -q "DB_ROOT_PWD=" "$ENV_FILE"; then
+    # If DB_ROOT_PWD already exists, replace its value
+    sed -i "s/^DB_ROOT_PWD=.*/DB_ROOT_PWD=$DB_ROOT_PWD/" "$ENV_FILE"
 else
-    # If MYSQL_ROOT_PASSWORD does not exist, add it to the .env file
-    echo "MYSQL_ROOT_PASSWORD=$MYSQL_ROOT_PASSWORD" >> "$ENV_FILE"
+    # If DB_ROOT_PWD does not exist, add it to the .env file
+    echo "DB_ROOT_PWD=$DB_ROOT_PWD" >> "$ENV_FILE"
 fi
 
-if grep -q "MYSQL_PASSWORD=" "$ENV_FILE"; then
-    # If MYSQL_PASSWORD already exists, replace its value
-    sed -i "s/^MYSQL_PASSWORD=.*/MYSQL_PASSWORD=$MYSQL_PASSWORD/" "$ENV_FILE"
+if grep -q "DB_PWF=" "$ENV_FILE"; then
+    # If DB_PWF already exists, replace its value
+    sed -i "s/^DB_PWF=.*/DB_PWF=$DB_PWF/" "$ENV_FILE"
 else
-    # If MYSQL_PASSWORD does not exist, add it to the .env file
-    echo "MYSQL_PASSWORD=$MYSQL_PASSWORD" >> "$ENV_FILE"
+    # If DB_PWF does not exist, add it to the .env file
+    echo "DB_PWF=$DB_PWF" >> "$ENV_FILE"
 fi

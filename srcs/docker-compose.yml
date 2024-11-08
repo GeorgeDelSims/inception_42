@@ -14,6 +14,17 @@ networks:
 # SERVICES : defines each containerised application (or microservice)
 # specifying its config, dependencies, volumes, network connections and env variables
 services:
+  mariadb:
+    container_name: mariadb
+    build: ./requirements/mariadb/.
+    volumes: 
+      - ../volumes/mariadb_data:/var/lib/mysql
+    env_file:
+      - .env
+    networks: 
+      - inception
+    restart: on-failure
+    
   nginx:
     container_name: nginx
     build: ./requirements/nginx/.
@@ -30,21 +41,10 @@ services:
       - inception
     restart: always
     
-  mariadb:
-    container_name: mariadb
-    build: ./requirements/mariadb/.
-    volumes: 
-      - ../volumes/mariadb_data:/var/lib/mysql
-    env_file:
-      - .env
-    networks: 
-      - inception
-    restart: always # ensures the container automatically restarts if it is stopped unexpectedly
-
   wordpress:
     container_name: wordpress
-    # depends_on:
-      # - mariadb
+    depends_on:
+      - mariadb
     build: ./requirements/wordpress/.
     volumes:
       - ../volumes/wordpress_data:/var/www/html

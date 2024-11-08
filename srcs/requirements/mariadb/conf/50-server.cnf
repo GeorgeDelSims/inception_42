@@ -5,8 +5,6 @@
 # this is read by the standalone daemon and embedded servers
 [server]
 
-init_file = /etc/mysql/init.sql
-
 # this is only for the mysqld standalone daemon
 [mysqld]
 
@@ -14,14 +12,14 @@ init_file = /etc/mysql/init.sql
 # * Basic Settings
 #
 
-user                    = root
+user                    = mysql
 pid-file                = /run/mysqld/mysqld.pid
+socket                  = /run/mysqld/mysqld.sock
+port                    = 3306
 basedir                 = /usr
 datadir                 = /var/lib/mysql
 tmpdir                  = /tmp
 lc-messages-dir         = /usr/share/mysql
-lc-messages             = en_US
-skip-external-locking
 
 # Broken reverse DNS slows down connections considerably and name resolve is
 # safe to skip if there are no "host by domain name" access grants
@@ -29,7 +27,7 @@ skip-external-locking
 
 # Instead of skip-networking the default is now to listen only on
 # localhost which is more compatible and is not less secure.
-bind-address            = 0.0.0.0
+bind-address            = 0.0.0.0 #jbidaux change so any network can connect to mariadb in the docker. best practice.
 
 #
 # * Fine Tuning
@@ -42,7 +40,7 @@ bind-address            = 0.0.0.0
 # This replaces the startup script and checks MyISAM tables if needed
 # the first time they are touched
 #myisam_recover_options = BACKUP
-#max_connections        = 100
+max_connections        = 200
 #table_cache            = 64
 
 #
@@ -113,7 +111,7 @@ collation-server      = utf8mb4_general_ci
 # you can put MariaDB-only options here
 [mariadb]
 
-# This group is only read by MariaDB-10.5 servers.
+# This group is only read by MariaDB-10.6 servers.
 # If you use the same .cnf file for MariaDB of different versions,
 # use this group for options that older servers don't understand
-[mariadb-10.5]
+[mariadb-10.6]
