@@ -3,6 +3,7 @@ FROM debian:bullseye
 # Update package list and install necessary packages for PHP 7.4 and WP-CLI
 RUN apt-get update && \
     apt-get install -y php7.4 php7.4-fpm php7.4-mysqli php7.4-json php7.4-curl php7.4-xml php7.4-mbstring curl && \
+    apt-get update && apt-get install -y default-mysql-client && \
     rm -rf /var/lib/apt/lists/*
 
 # Copy custom www.conf into the PHP-FPM pool configuration

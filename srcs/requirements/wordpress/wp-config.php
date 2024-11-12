@@ -21,6 +21,7 @@
 // ** Database settings - You can get this info from your web host ** //
 /** The name of the database for WordPress */
 define('DB_NAME', getenv('MYSQL_DATABASE'));
+
 /** Database username */
 define('DB_USER', getenv('MYSQL_USER'));
 
@@ -28,13 +29,27 @@ define('DB_USER', getenv('MYSQL_USER'));
 define('DB_PASSWORD', getenv('MYSQL_PASSWORD'));
 
 /** Database hostname */
-define('DB_HOST', 'mariadb');//getenv('WORDPRESS_DB_HOST') ?: 'mariadb:3306');
+define('DB_HOST', getenv('DB_HOST'));
 
 /** Database charset to use in creating database tables. */
-define( 'DB_CHARSET', 'utf8' );
+define('DB_CHARSET', 'utf8');
 
 /** The database collate type. Don't change this if in doubt. */
-define( 'DB_COLLATE', '' );
+define('DB_COLLATE', '');
+
+define('WP_HOME', 'gsims.42.fr');
+
+define('WP_SITEURL', 'gsims.42.fr');
+
+
+define('WP_DEBUG', true);
+define('WP_DEBUG_LOG', true);
+define('WP_DEBUG_DISPLAY', true);
+
+error_log('DB_NAME: ' . DB_NAME, 0);
+error_log('DB_USER: ' . DB_USER, 0);
+error_log('DB_PASSWORD: ' . DB_PASSWORD, 0);
+error_log('DB_HOST: ' . DB_HOST, 0);
 
 /**#@+
  * Authentication unique keys and salts.

@@ -20,7 +20,7 @@ RUN mkdir -p /etc/nginx/ssl && \
     echo 'fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;' >> fastcgi_params
 
 # HTTPS PORT 
-EXPOSE 443  
+EXPOSE 443
 
 # Set the main command to start whenever the container starts
 CMD ["nginx", "-g", "daemon off;"]

@@ -1,0 +1,38 @@
+Step-by-Step Transfer of Information
+
+Browser → Nginx:
+
+A user connects to the server via a browser (e.g., http://localhost).
+The request goes to the Nginx container, 
+which acts as a reverse proxy and serves static content or 
+routes dynamic requests to the WordPress container.
+
+Nginx → WordPress:
+
+If the request is for WordPress (dynamic content), 
+Nginx forwards it to the WordPress container running PHP-FPM.
+The WordPress PHP scripts process the request.
+
+WordPress → MariaDB:
+
+To generate dynamic content (e.g., blog posts, pages), 
+WordPress connects to the MariaDB container.
+It queries the database using the credentials defined in wp-config.php.
+
+MariaDB → WordPress:
+
+MariaDB sends the queried data back to WordPress.
+WordPress uses this data to render the requested page.
+WordPress → Nginx → Browser:
+
+The generated HTML page is returned to Nginx, which sends it to the browser.
+
+Data and Configuration Flow
+Nginx:
+Configuration file defines how requests are routed (e.g., PHP requests go to WordPress).
+
+WordPress:
+Uses PHP to connect to MariaDB and dynamically generate content.
+
+MariaDB:
+Stores WordPress data like posts, users, and settings.

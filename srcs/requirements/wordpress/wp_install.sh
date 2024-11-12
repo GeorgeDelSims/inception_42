@@ -3,15 +3,22 @@
 
 # Change to the web root directory
 sleep 15
+
 cd /var/www/html
+pwd
+rm wp-config-sample.php
+rm wp-config.php 
+# ls -la
+# cd ../../../
+pwd
 mv ../../../wp-config.php wp-config.php
 echo "copied wp-config/php into correct folder"
-ls -la
+# ls -la
 
 # Check if wordpress is already installed or not: 
-if [ "/var/www/html/wp-config.php" ]; then
-    echo "WordPress is already installed. Skipping installation."
-else
+# if [ "/var/www/html/wp-config.php" ]; then
+#     echo "WordPress is already installed. Skipping installation."
+# else
     echo "Setting up WordPress..."
 
     # Download and configure WP-CLI
@@ -28,7 +35,7 @@ else
     # Install WordPress
     wp core install --url=localhost --title=inception --admin_user=${ADMIN_USER} --admin_password=${ADMIN_PASSWORD} --admin_email=${ADMIN_EMAIL} --allow-root
 
-fi
+# fi
 
 # Create the /run/php directory if it doesn't exist
 mkdir -p /run/php
