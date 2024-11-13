@@ -41,6 +41,7 @@ define('WP_HOME', 'gsims.42.fr');
 
 define('WP_SITEURL', 'gsims.42.fr');
 
+// define('WP_ALLOW_REPAIR', true);
 
 define('WP_DEBUG', true);
 define('WP_DEBUG_LOG', true);
@@ -93,7 +94,6 @@ $table_prefix = 'wp_';
  *
  * @link https://developer.wordpress.org/advanced-administration/debug/debug-wordpress/
  */
-define( 'WP_DEBUG', false );
 
 /* Add any custom values between this line and the "stop editing" line. */
 

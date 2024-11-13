@@ -1,6 +1,8 @@
 FROM debian:bullseye
 
-# Update package list and install necessary packages for PHP 7.4 and WP-CLI
+# RUN cd ../../volumes/wordpress_data && rm -rf *
+
+# Install necessary packages
 RUN apt-get update && \
     apt-get install -y php7.4 php7.4-fpm php7.4-mysqli php7.4-json php7.4-curl php7.4-xml php7.4-mbstring curl && \
     apt-get update && apt-get install -y default-mysql-client && \
@@ -9,26 +11,19 @@ RUN apt-get update && \
 # Copy custom www.conf into the PHP-FPM pool configuration
 COPY www.conf /etc/php/7.4/fpm/pool.d/www.conf
 
+# Prepare /var/www/html directory
+RUN mkdir -p /var/www/html && \
+    chown -R www-data:www-data /var/www/html && \
+    chmod -R 755 /var/www/html
 
-# copy wordpress config file into container
-# THis copy does not seem to be working: !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-# RUN rm /var/www/html/wp-config-sample.php
-COPY ./wp-config.php /
-
-
-# Change ownership to the appropriate user and group
-RUN chown www-data:www-data /wp-config.php
-RUN chmod 777 /wp-config.php
-
-# RUN rm /var/www/html/wp-config-sample.php && \
-#     cp ./wp-config.php /var/www/html/wp-config.php
+# Copy WordPress config to the correct location
+COPY ./wp-config.php /wp-config.php
+RUN chown www-data:www-data /wp-config.php && \
+    chmod 644 /wp-config.php
 
 # Copy the wp_install.sh script and make it executable
 COPY ./wp_install.sh /usr/local/bin/wp_install.sh
 RUN chmod +x /usr/local/bin/wp_install.sh
 
 # Run the wp_install.sh script as an entrypoint
-ENTRYPOINT ["/usr/local/bin/wp_install.sh"]
-
-# # Start PHP-FPM in the foreground
-# CMD ["php-fpm7.4", "-F"]
+ENTRYPOINT ["/bin/bash", "-c", "chown -R www-data:www-data /var/www/html && chmod -R 755 /var/www/html && /usr/local/bin/wp_install.sh"]
