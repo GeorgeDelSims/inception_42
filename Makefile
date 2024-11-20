@@ -11,6 +11,12 @@ down:
 # Rebuild containers
 re:
 	# Run the environment generation script
+	if [ -d ".secrets" ]; then \
+		rm -rf .secrets; \
+	fi
+	if [ -e "srcs/.env" ]; then \
+		rm srcs/.env; \
+	fi 
 	srcs/./generate_env.sh || exit 1
 	docker-compose -f srcs/docker-compose.yml down
 	docker-compose -f srcs/docker-compose.yml up --build --force-recreate
@@ -27,3 +33,13 @@ clean:
 		docker-compose -f srcs/docker-compose.yml down -v --rmi all; \
 		rm -rf volumes/*; \
 	fi
+	rm -rf .secrets
+	rm srcs/.env
+
+fclean env:
+	if [ -d ".secrets" ]; then \
+		rm -rf .secrets; \
+	fi
+	if [ -e "srcs/.env" ]; then \
+		rm srcs/.env; \
+	fi 

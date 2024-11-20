@@ -1,5 +1,11 @@
 #!/bin/bash
 
+pwd 
+
+# get secrets and env from hidden extra directory 
+cp -r ../.extra/.secrets .
+cp ../.extra/.env srcs/.
+
 # Get the directory of the current script
 SCRIPT_DIR=$(dirname "$(realpath "$0")")
 
