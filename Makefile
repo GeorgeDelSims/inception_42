@@ -1,7 +1,7 @@
 # Build and start all containers
 up:
 	# Run the environment generation script
-	srcs/./generate_env.sh || exit 1
+	# srcs/./generate_env.sh || exit 1
 	docker-compose -f srcs/docker-compose.yml up --build
 
 # Stop and remove containers

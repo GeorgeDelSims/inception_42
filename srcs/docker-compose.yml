@@ -1,25 +1,31 @@
-# version: "3.5"
+version: "3.5"
 
-# VOLUMES: defines storage location that Docker manages
-# maintains data persistance (even if container restarts)
+# VOLUMES: Defines storage locations managed by Docker, bound to specific host paths
 volumes:
-  mariadb_data: # database for wordpress
-  wordpress_data: # actual wordpress files
+  mariadb_data: 
+    driver: local
+    driver_opts:
+      type: 'none'
+      o: 'bind'
+      device: '/home/gsims/data/mariadb' 
+  wordpress_data:
+    driver: local
+    driver_opts:
+      type: 'none'
+      o: 'bind'
+      device: '/home/gsims/data/wordpress'
 
-# NETWORKS: defines virtual networks that connect containers
-# each container is then added to this network in order to link them up
+# NETWORKS: Defines virtual networks for container communication
 networks: 
   inception: 
 
-# SERVICES : defines each containerised application (or microservice)
-# specifying its config, dependencies, volumes, network connections and env variables
+# SERVICES: Defines each containerized application
 services:
   mariadb:
-    # image: mariadb
     container_name: mariadb
     build: ./requirements/mariadb/.
     volumes: 
-      - ../volumes/mariadb_data:/var/lib/mysql
+      - mariadb_data:/var/lib/mysql  
     env_file:
       - .env
     environment: 
@@ -35,33 +41,28 @@ services:
     container_name: nginx
     build: ./requirements/nginx/.
     ports:
-      - "80:80" #http Port
-      - "443:443" # https Port
+      - "443:443" # HTTPS Port
     depends_on:
       - wordpress
-      # - mariadb
-    volumes: # defines directories that persist outside of container
+    volumes:
       - ./requirements/nginx/conf/nginx.conf:/etc/nginx/nginx.conf  # NGINX config (bind mount)
-      - ../volumes/wordpress_data:/var/www/html
+      - wordpress_data:/var/www/html  
     networks:
       - inception
     restart: always
     
   wordpress:
-    # image: wordpress:6.6.2-fpm
     container_name: wordpress
     depends_on:
       - mariadb
     build: ./requirements/wordpress/.
     volumes:
-      - ../volumes/wordpress_data:/var/www/html
+      - wordpress_data:/var/www/html  
     env_file:
       - .env
-    # environment:
-      # WORDPRESS_DB_HOST: mariadb
-      # WORDPRESS_DB_USER: gsims
-      # WORDPRESS_DB_PASSWORD: pass
-      # WORDPRESS_DB_NAME: wordpress
+    environment:
+      WORDPRESS_DB_HOST: mariadb
     networks: 
       - inception
     restart: always
+

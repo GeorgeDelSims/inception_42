@@ -40,11 +40,11 @@ cat <<EOF | mariadb -u root --password="$MYSQL_ROOT_PASSWORD"
 CREATE DATABASE IF NOT EXISTS $MYSQL_DATABASE;
 
 -- Create 'gsims' for both '%' (TCP/IP) and 'gsims.42.fr' (Unix sockets)
-CREATE USER IF NOT EXISTS '$MYSQL_USER'@'%' IDENTIFIED BY '$MYSQL_PASSWORD';
+CREATE USER IF NOT EXISTS '$MYSQL_USER'@'wordpress.srcs_inception' IDENTIFIED BY '$MYSQL_PASSWORD';
 CREATE USER IF NOT EXISTS '$MYSQL_USER'@'gsims.42.fr' IDENTIFIED BY '$MYSQL_PASSWORD';
 
 -- Grant privileges to 'gsims' for both '%' and 'localhost'
-GRANT ALL PRIVILEGES ON $MYSQL_DATABASE.* TO '$MYSQL_USER'@'%';
+GRANT ALL PRIVILEGES ON $MYSQL_DATABASE.* TO '$MYSQL_USER'@'wordpress.srcs_inception';
 GRANT ALL PRIVILEGES ON $MYSQL_DATABASE.* TO '$MYSQL_USER'@'gsims.42.fr';
 
 -- Allow 'root' to connect from both '%' (TCP/IP) and 'localhost' (Unix sockets)

@@ -26,4 +26,4 @@ COPY tools/wp_install.sh /usr/local/bin/wp_install.sh
 RUN chmod +x /usr/local/bin/wp_install.sh
 
 # Run the wp_install.sh script as an entrypoint
-ENTRYPOINT ["/bin/bash", "-c", "chown -R www-data:www-data /var/www/html && chmod -R 755 /var/www/html && /usr/local/bin/wp_install.sh"]
+ENTRYPOINT ["/usr/local/bin/wp_install.sh"]
